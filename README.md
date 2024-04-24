@@ -1,59 +1,38 @@
 <p align="center">
-<img src="./program_info/pollymc-header-black.svg#gh-light-mode-only" alt="PollyMC logo" width="60%"/>
-<img src="./program_info/pollymc-header.svg#gh-dark-mode-only" alt="PollyMC logo" width="60%"/>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="/program_info/shatteredprism-header.svg">
+  <source media="(prefers-color-scheme: light)" srcset="/program_info/shatteredprism-header.svg">
+  <img alt="ShatteredPrism" src="/program_info/shatteredprism-header.svg" width="40%">
+</picture>
 </p>
 
-PollyMC is a **fork** of Prism Launcher. It is **not** endorsed by or affiliated with PolyMC or Prism launcher.
+<p align="center">
+  ShatteredPrism is a custom launcher for Minecraft that allows you to easily manage multiple installations of Minecraft at once.<br />
+  <br />This is a <b>fork</b> of PrismLauncher and is <b>not</b> endorsed by it.
+</p>
 
-<h1>Advantages of this fork over regular Prism:</h1>
+# Advantages over PrismLauncher
 
-Offline mode doesn't require an account.
+- Completely DRM-Free.
+- In-App FTB Modpack Downloading restored.
+- Support 3rd Party Auth Servers(courtesy of [this project](https://github.com/fn2006/PollyMC/)).
 
-[Alternative auth server support](https://github.com/fn2006/PollyMC/wiki/Alternative-Auth-Servers).
 
-Ability to download FTB modpacks from within the launcher.
+## Installation
 
-Mojang account support (Online-mode servers won't work).
+- Downloads can be found on the [GitHub Releases](https://github.com/LunaisLazier/ShatteredPrism/releases).
+- Last build status can be found in the [GitHub Actions](https://github.com/LunaisLazier/ShatteredPrism/actions) tab (this also includes the pull requests status).
 
-<h1>Having a problem with the launcher?</h1>
+## Community & Support
 
-You **will not** open an issue in the Prism Launcher repo.
+Feel free to create a GitHub issue if you find a bug or want to suggest something, it is currently the **only** way to contact anyone regarding this project.
 
-You **will not** open an issue in the PolyMC repo.
+Do **not** ask for support on any of the official PrismLauncher channels as they cannot be held responsible for any issues caused by the changes made.
 
-You **will not** ask about PollyMC in the Prism Launcher discord.
 
-You **will not** ask about PollyMC in the PolyMC discord.
 
-You **will** open an issue [here](https://github.com/fn2006/PollyMC/issues).
+## License [![https://github.com/PrismLauncher/PrismLauncher/blob/develop/LICENSE](https://img.shields.io/github/license/PrismLauncher/PrismLauncher?label=License&logo=gnu&color=C4282D)](LICENSE)
 
-You **will** start a discussion [here](https://github.com/fn2006/PollyMC/discussions).
+All launcher code is available under the GPL-3.0-only license.
 
-<h1>Installation</h1>
-
-<h2>Windows</h2>
-
-You can get installers or portable builds from the [releases section](https://github.com/fn2006/PollyMC/releases/latest), MSVC builds are recommended over MinGW builds but there's no real difference.
-
-<h3>Scoop Installer</h3>
-
-If you prefer Scoop over traditional methods of installing Windows programs, [TechPro424](https://github.com/TechPro424) maintains a Scoop bucket that provides PollyMC.
-
-To install PollyMC from Scoop:
-
-First run `scoop bucket add TechPro424 https://github.com/TechPro424/scoop-bucket` to add the bucket to your system.
-
-Then run `scoop install TechPro424/pollymc`.
-
-<h2>Linux</h2>
-
-You can get the launcher as an AppImage, a Flatpak or a portable binary from the [releases section](https://github.com/fn2006/PollyMC/releases/latest).
-
-Alternatively, PollyMC is also available on the [AUR](https://aur.archlinux.org/packages?O=0&K=pollymc).
-
-<h2>MacOS</h2>
-
-There are builds for MacOS in the [releases section](https://github.com/fn2006/PollyMC/releases/latest).
-<h2></h2>
-
-To build the launcher yourself, follow [the instructions on the Prism Launcher website](https://prismlauncher.org/wiki/development/build-instructions) but clone this repo instead.
+The logo and related assets are under the CC BY-NC-SA 4.0 license.

@@ -135,15 +135,6 @@
 #include "gamemode_client.h"
 #endif
 
-#if defined(Q_OS_LINUX)
-#include <sys/statvfs.h>
-#endif
-
-#if defined(Q_OS_FREEBSD) || defined(Q_OS_OPENBSD)
-#include <sys/mount.h>
-#include <sys/types.h>
-#endif
-
 #if defined(Q_OS_MAC)
 #if defined(SPARKLE_ENABLED)
 #include "updater/MacSparkleUpdater.h"
@@ -672,6 +663,9 @@ Application::Application(int& argc, char** argv) : QApplication(argc, argv)
 
         // The cat
         m_settings->registerSetting("TheCat", false);
+        m_settings->registerSetting("CatOpacity", 100);
+
+        m_settings->registerSetting("StatusBarVisible", true);
 
         m_settings->registerSetting("ToolbarsLocked", false);
 
@@ -754,9 +748,6 @@ Application::Application(int& argc, char** argv) : QApplication(argc, argv)
         m_settings->registerSetting("FlameKeyShouldBeFetchedOnStartup", true);
         m_settings->registerSetting("ModrinthToken", "");
         m_settings->registerSetting("UserAgentOverride", "");
-
-        // FTBApp instances
-        m_settings->registerSetting("FTBAppInstancesPath", "");
 
         // Init page provider
         {
@@ -907,7 +898,7 @@ Application::Application(int& argc, char** argv) : QApplication(argc, argv)
 
     // check update locks
     {
-        auto update_log_path = FS::PathCombine(m_dataPath, "logs", "pollymc_update.log");
+        auto update_log_path = FS::PathCombine(m_dataPath, "logs", "shatteredprism_update.log");
 
         auto update_lock = QFileInfo(FS::PathCombine(m_dataPath, ".prism_launcher_update.lock"));
         if (update_lock.exists()) {
@@ -921,7 +912,7 @@ Application::Application(int& argc, char** argv) : QApplication(argc, argv)
                               "\n"
                               "This likely means that a update attempt failed. Please ensure your installation is in working order before "
                               "proceeding.\n"
-                              "Check the PollyMC updater log at: \n"
+                              "Check the ShatteredPrism updater log at: \n"
                               "%7\n"
                               "for details on the last update attempt.\n"
                               "\n"
@@ -958,7 +949,7 @@ Application::Application(int& argc, char** argv) : QApplication(argc, argv)
                               "\n"
                               "Please ensure your installation is in working order before "
                               "proceeding.\n"
-                              "Check the PollyMC updater log at: \n"
+                              "Check the ShatteredPrism updater log at: \n"
                               "%1\n"
                               "for details on the last update attempt.")
                                .arg(update_log_path);
@@ -990,7 +981,7 @@ Application::Application(int& argc, char** argv) : QApplication(argc, argv)
             auto infoMsg = tr("Update succeeded\n"
                               "\n"
                               "You are now running %1 .\n"
-                              "Check the PollyMC updater log at: \n"
+                              "Check the ShatteredPrism updater log at: \n"
                               "%1\n"
                               "for details.")
                                .arg(BuildConfig.printableVersionString())
@@ -1003,37 +994,6 @@ Application::Application(int& argc, char** argv) : QApplication(argc, argv)
             msgBox->adjustSize();
             msgBox->open();
             FS::deletePath(update_success_marker.absoluteFilePath());
-        }
-    }
-
-    // notify user if /tmp is mounted with `noexec` (#1693)
-    {
-        bool is_tmp_noexec = false;
-
-#if defined(Q_OS_LINUX)
-
-        struct statvfs tmp_stat;
-        statvfs("/tmp", &tmp_stat);
-        is_tmp_noexec = tmp_stat.f_flag & ST_NOEXEC;
-
-#elif defined(Q_OS_FREEBSD) || defined(Q_OS_OPENBSD)
-
-        struct statfs tmp_stat;
-        statfs("/tmp", &tmp_stat);
-        is_tmp_noexec = tmp_stat.f_flags & MNT_NOEXEC;
-
-#endif
-
-        if (is_tmp_noexec) {
-            auto infoMsg =
-                tr("Your /tmp directory is currently mounted with the 'noexec' flag enabled.\n"
-                   "Some versions of Minecraft may not launch.\n");
-            auto msgBox = new QMessageBox(QMessageBox::Information, tr("Incompatible system configuration"), infoMsg, QMessageBox::Ok);
-            msgBox->setDefaultButton(QMessageBox::Ok);
-            msgBox->setAttribute(Qt::WA_DeleteOnClose);
-            msgBox->setMinimumWidth(460);
-            msgBox->adjustSize();
-            msgBox->open();
         }
     }
 

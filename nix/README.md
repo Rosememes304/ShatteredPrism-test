@@ -9,8 +9,7 @@ See [Package variants](#package-variants) for a list of available packages.
 ## Installing a development release (flake)
 
 We use [garnix](https://garnix.io/) to build and cache our development builds.
-If you want to avoid rebuilds you may add the garnix cache to your substitutors, or use `--accept-flake-config`
-to temporarily enable it when using `nix` commands.
+If you want to avoid rebuilds you may add the garnix cache to your substitutors.
 
 Example (NixOS):
 

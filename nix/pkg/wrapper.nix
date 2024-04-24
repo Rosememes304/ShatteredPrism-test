@@ -2,7 +2,7 @@
   lib,
   stdenv,
   symlinkJoin,
-  pollymc-unwrapped,
+  shatteredprism-unwrapped,
   wrapQtAppsHook,
   addOpenGLRunpath,
   qtbase, # needed for wrapQtAppsHook
@@ -28,14 +28,14 @@
   additionalLibs ? [],
   additionalPrograms ? [],
 }: let
-  pollymcFinal = pollymc-unwrapped.override {
+  shatteredprismFinal = shatteredprism-unwrapped.override {
     inherit msaClientID gamemodeSupport;
   };
 in
   symlinkJoin {
-    name = "pollymc-${pollymcFinal.version}";
+    name = "shatteredprism-${shatteredprismFinal.version}";
 
-    paths = [pollymcFinal];
+    paths = [shatteredprismFinal];
 
     nativeBuildInputs = [
       wrapQtAppsHook
@@ -84,12 +84,12 @@ in
         ]
         ++ additionalPrograms;
     in
-      ["--prefix POLLYMC_JAVA_PATHS : ${lib.makeSearchPath "bin/java" jdks}"]
+      ["--prefix SHATTEREDPRISM_JAVA_PATHS : ${lib.makeSearchPath "bin/java" jdks}"]
       ++ lib.optionals stdenv.isLinux [
         "--set LD_LIBRARY_PATH ${addOpenGLRunpath.driverLink}/lib:${lib.makeLibraryPath runtimeLibs}"
         # xorg.xrandr needed for LWJGL [2.9.2, 3) https://github.com/LWJGL/lwjgl/issues/128
         "--prefix PATH : ${lib.makeBinPath runtimePrograms}"
       ];
 
-    inherit (pollymcFinal) meta;
+    inherit (shatteredprismFinal) meta;
   }
