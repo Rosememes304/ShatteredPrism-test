@@ -40,7 +40,6 @@
 #include "Markdown.h"
 #include "StringUtils.h"
 #include "ui_AboutDialog.h"
-#include "StringUtils.h"
 
 #include <net/NetJob.h>
 #include <qobject.h>

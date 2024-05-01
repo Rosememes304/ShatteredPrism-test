@@ -8,7 +8,6 @@
 #include "modplatform/ModIndex.h"
 #include "modplatform/flame/FlameAPI.h"
 #include "ui_ReviewMessageBox.h"
-#include "StringUtils.h"
 
 #include "Markdown.h"
 

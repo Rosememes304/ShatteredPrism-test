@@ -27,7 +27,6 @@
 #include "Markdown.h"
 #include "StringUtils.h"
 #include "ui_UpdateAvailableDialog.h"
-#include "StringUtils.h"
 
 UpdateAvailableDialog::UpdateAvailableDialog(const QString& currentVersion,
                                              const QString& availableVersion,
