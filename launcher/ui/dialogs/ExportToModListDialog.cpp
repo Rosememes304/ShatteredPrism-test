@@ -27,6 +27,7 @@
 #include "minecraft/mod/ModFolderModel.h"
 #include "modplatform/helpers/ExportToModList.h"
 #include "ui_ExportToModListDialog.h"
+#include "StringUtils.h"
 
 #include <QFileDialog>
 #include <QFileSystemModel>

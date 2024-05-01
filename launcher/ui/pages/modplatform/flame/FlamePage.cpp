@@ -47,6 +47,7 @@
 #include "modplatform/flame/FlameAPI.h"
 #include "ui/dialogs/NewInstanceDialog.h"
 #include "ui/widgets/ProjectItem.h"
+#include "StringUtils.h"
 
 #include "net/ApiDownload.h"
 
