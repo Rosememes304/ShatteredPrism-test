@@ -366,7 +366,7 @@ QList<QString> JavaUtils::FindJavaPaths()
     auto home = qEnvironmentVariable("HOME");
 
     // javas downloaded by sdkman
-    javas.append(FS::PathCombine(home, ".sdkman/candidates/java"));
+    scanJavaDirs(FS::PathCombine(home, ".sdkman/candidates/java"));
 
     javas.append(getMinecraftJavaBundle());
     javas = addJavasFromEnv(javas);
