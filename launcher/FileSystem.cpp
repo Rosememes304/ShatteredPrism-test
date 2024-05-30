@@ -872,16 +872,37 @@ QString RemoveInvalidPathChars(QString path, QChar replaceWith)
     invalidChars = BAD_WIN_CHARS;
 #endif
 
-    QString fileSystemType = getFileSystemType(QFileInfo(path).absolutePath());
-
-    if (fileSystemType == "FAT32") {
-        invalidChars += BAD_FAT32_CHARS;
-    } else if (fileSystemType == "NTFS") {
-        invalidChars += BAD_NTFS_CHARS;
-    } else if (fileSystemType == "HFS+" || fileSystemType == "APFS") {
-        invalidChars += BAD_HFS_CHARS;
-    } else if (fileSystemType == "exFAT") {
-        invalidChars += BAD_EXFAT_CHARS;
+    // the null character is ignored in this check as it was not a problem until now
+    switch (statFS(path).fsType) {
+        case FilesystemType::FAT:
+            invalidChars += BAD_FAT_CHARS;
+            break;
+        case FilesystemType::NTFS:
+        /* fallthrough */
+        case FilesystemType::REFS:  // similar to NTFS(should be available only on windows)
+            invalidChars += BAD_NTFS_CHARS;
+            break;
+        // case FilesystemType::EXT:
+        // case FilesystemType::EXT_2_OLD:
+        // case FilesystemType::EXT_2_3_4:
+        // case FilesystemType::XFS:
+        // case FilesystemType::BTRFS:
+        // case FilesystemType::NFS:
+        // case FilesystemType::ZFS:
+        case FilesystemType::APFS:
+        /* fallthrough */
+        case FilesystemType::HFS:
+        /* fallthrough */
+        case FilesystemType::HFSPLUS:
+        /* fallthrough */
+        case FilesystemType::HFSX:
+            invalidChars += BAD_HFS_CHARS;
+            break;
+        // case FilesystemType::FUSEBLK:
+        // case FilesystemType::F2FS:
+        // case FilesystemType::UNKNOWN:
+        default:
+            break;
     }
 
     if (invalidChars.size() != 0) {
