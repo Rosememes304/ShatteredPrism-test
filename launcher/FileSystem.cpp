@@ -74,7 +74,6 @@
 #include <objbase.h>
 #include <shlobj.h>
 #else
-#include <sys/statvfs.h>
 #include <utime.h>
 #endif
 
@@ -809,53 +808,13 @@ QString removeDuplicates(QString a)
     return b.join("");
 }
 
-QString getFileSystemType(const QString& path)
-{
-    QString fileSystemType;
-
-#ifdef Q_OS_WIN
-    wchar_t volume[MAX_PATH + 1] = { 0 };
-    if (GetVolumeInformationW((LPCWSTR)path.utf16(), nullptr, 0, nullptr, nullptr, nullptr, volume, MAX_PATH)) {
-        fileSystemType = QString::fromWCharArray(volume);
-    }
-#elif defined(Q_OS_UNIX)
-    struct statvfs buf;
-    if (statvfs(path.toUtf8().constData(), &buf) == 0) {
-        switch (buf.f_type) {
-            case 0x4d44:  // "MSDOS"
-                fileSystemType = "FAT32";
-                break;
-            case 0x5346544e:  // "NTFS"
-                fileSystemType = "NTFS";
-                break;
-            case 0x4244:  // "HFS+" or "H+" on some systems
-            case 0x482b:  // "HFS+" or "H+" on some systems
-                fileSystemType = "HFS+";
-                break;
-            case 0x41465342:  // "APFS"
-                fileSystemType = "APFS";
-                break;
-            case 0x65735546:  // "exFAT"
-                fileSystemType = "exFAT";
-                break;
-            default:
-                break;
-        }
-    }
-#endif
-
-    return fileSystemType;
-}
-
 static const QString BAD_WIN_CHARS = "\"?<>:*|\r\n";
 
-static const QString BAD_FAT32_CHARS = "<>:\"|?*+.,;=[]!";
+static const QString BAD_FAT_CHARS = "<>:\"|?*+.,;=[]!";
 static const QString BAD_NTFS_CHARS = "<>:\"|?*";
 static const QString BAD_HFS_CHARS = ":";
-static const QString BAD_EXFAT_CHARS = "<>:\"|?*";
 
-static const QString BAD_FILENAME_CHARS =
-    removeDuplicates(BAD_WIN_CHARS + BAD_FAT32_CHARS + BAD_NTFS_CHARS + BAD_HFS_CHARS + BAD_EXFAT_CHARS) + "\\/";
+static const QString BAD_FILENAME_CHARS = removeDuplicates(BAD_WIN_CHARS + BAD_FAT_CHARS + BAD_NTFS_CHARS + BAD_HFS_CHARS) + "\\/";
 
 QString RemoveInvalidFilenameChars(QString string, QChar replaceWith)
 {
@@ -872,16 +831,14 @@ QString RemoveInvalidPathChars(QString path, QChar replaceWith)
     invalidChars = BAD_WIN_CHARS;
 #endif
 
-    // the null character is ignored in this check as it was not a problem until now
     switch (statFS(path).fsType) {
         case FilesystemType::FAT:
             invalidChars += BAD_FAT_CHARS;
             break;
         case FilesystemType::NTFS:
-        /* fallthrough */
-        case FilesystemType::REFS:  // similar to NTFS(should be available only on windows)
             invalidChars += BAD_NTFS_CHARS;
             break;
+        // case FilesystemType::REFS:
         // case FilesystemType::EXT:
         // case FilesystemType::EXT_2_OLD:
         // case FilesystemType::EXT_2_3_4:
