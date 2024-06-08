@@ -66,6 +66,52 @@ LauncherPartLaunch::LauncherPartLaunch(LaunchTask* parent) : LaunchStep(parent)
     connect(&m_process, &LoggedProcess::stateChanged, this, &LauncherPartLaunch::on_state);
 }
 
+#ifdef Q_OS_WIN
+// returns 8.3 file format from long path
+#include <windows.h>
+QString shortPathName(const QString& file)
+{
+    auto input = file.toStdWString();
+    std::wstring output;
+    long length = GetShortPathNameW(input.c_str(), NULL, 0);
+    if (length == 0)
+        return {};
+    // NOTE: this resizing might seem weird...
+    // when GetShortPathNameW fails, it returns length including null character
+    // when it succeeds, it returns length excluding null character
+    // See: https://msdn.microsoft.com/en-us/library/windows/desktop/aa364989(v=vs.85).aspx
+    output.resize(length);
+    if (GetShortPathNameW(input.c_str(), (LPWSTR)output.c_str(), length) == 0)
+        return {};
+    output.resize(length - 1);
+    QString ret = QString::fromStdWString(output);
+    return ret;
+}
+
+QString getShortPathName(const QString& file)
+{
+    auto path = shortPathName(file);
+    if (!path.isEmpty())
+        return path;
+    // the path can not be getted due to the file/folder not existing
+    // so create the parrent folder
+    // and assume that we can concatenate the short path of the parent folder with the file name
+    // usually the 8 bit characters are in the instance name not in the name of the end files/folders we need
+    FS::ensureFilePathExists(file);
+    QFileInfo a(file);
+    auto partialShortPath = shortPathName(a.path());
+    if (!partialShortPath.isEmpty())
+        return FS::PathCombine(partialShortPath, a.fileName());
+    return file;
+}
+#endif
+
+// if the string survives roundtrip through local 8bit encoding...
+bool fitsInLocal8bit(const QString& string)
+{
+    return string == QString::fromLocal8Bit(string.toLocal8Bit());
+}
+
 void LauncherPartLaunch::executeTask()
 {
     QString jarPath = APPLICATION->getJarPath("NewLaunch.jar");
@@ -113,7 +159,13 @@ void LauncherPartLaunch::executeTask()
 
     auto natPath = minecraftInstance->getNativePath();
 #ifdef Q_OS_WIN
-    natPath = FS::getPathNameInLocal8bit(natPath);
+    if (!fitsInLocal8bit(natPath)) {
+        args << "-Djava.library.path=" + getShortPathName(natPath);
+    } else {
+        args << "-Djava.library.path=" + natPath;
+    }
+#else
+    args << "-Djava.library.path=" + natPath;
 #endif
     args << "-Djava.library.path=" + natPath;
 
@@ -121,7 +173,11 @@ void LauncherPartLaunch::executeTask()
 #ifdef Q_OS_WIN
     QStringList processed;
     for (auto& item : classPath) {
-        processed << FS::getPathNameInLocal8bit(item);
+        if (!fitsInLocal8bit(item)) {
+            processed << getShortPathName(item);
+        } else {
+            processed << item;
+        }
     }
     args << processed.join(';');
 #else
