@@ -254,7 +254,6 @@
        </item>
        <item>
         <spacer name="verticalSpacer_2">
-        <spacer name="verticalSpacer_FeaturesTab">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
