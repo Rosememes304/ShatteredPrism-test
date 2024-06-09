@@ -55,6 +55,7 @@ CustomPage::CustomPage(NewInstanceDialog* dialog, QWidget* parent) : QWidget(par
     connect(ui->alphaFilter, &QCheckBox::stateChanged, this, &CustomPage::filterChanged);
     connect(ui->betaFilter, &QCheckBox::stateChanged, this, &CustomPage::filterChanged);
     connect(ui->snapshotFilter, &QCheckBox::stateChanged, this, &CustomPage::filterChanged);
+    connect(ui->oldSnapshotFilter, &QCheckBox::stateChanged, this, &CustomPage::filterChanged);
     connect(ui->releaseFilter, &QCheckBox::stateChanged, this, &CustomPage::filterChanged);
     connect(ui->experimentsFilter, &QCheckBox::stateChanged, this, &CustomPage::filterChanged);
     connect(ui->refreshBtn, &QPushButton::clicked, this, &CustomPage::refresh);
@@ -95,11 +96,13 @@ void CustomPage::filterChanged()
 {
     QStringList out;
     if (ui->alphaFilter->isChecked())
-        out << "(alpha)";
+        out << "(old_alpha)";
     if (ui->betaFilter->isChecked())
-        out << "(beta)";
+        out << "(old_beta)";
     if (ui->snapshotFilter->isChecked())
         out << "(snapshot)";
+    if (ui->oldSnapshotFilter->isChecked())
+        out << "(old_snapshot)";
     if (ui->releaseFilter->isChecked())
         out << "(release)";
     if (ui->experimentsFilter->isChecked())

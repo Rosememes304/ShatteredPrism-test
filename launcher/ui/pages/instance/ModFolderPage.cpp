@@ -121,9 +121,6 @@ ModFolderPage::ModFolderPage(BaseInstance* inst, std::shared_ptr<ModFolderModel>
         ui->actionsToolbar->addAction(ui->actionVisitItemPage);
         connect(ui->actionVisitItemPage, &QAction::triggered, this, &ModFolderPage::visitModPages);
 
-        ui->actionsToolbar->insertActionAfter(ui->actionVisitItemPage, ui->actionExportMetadata);
-        connect(ui->actionExportMetadata, &QAction::triggered, this, &ModFolderPage::exportModMetadata);
-
         auto check_allow_update = [this] { return ui->treeView->selectionModel()->hasSelection() || !m_model->empty(); };
 
         connect(ui->treeView->selectionModel(), &QItemSelectionModel::selectionChanged, this,

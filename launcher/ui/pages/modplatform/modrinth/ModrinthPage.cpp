@@ -105,7 +105,6 @@ void ModrinthPage::retranslate()
 void ModrinthPage::openedImpl()
 {
     BasePage::openedImpl();
-    suggestCurrent();
     triggerSearch();
 }
 

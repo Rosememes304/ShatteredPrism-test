@@ -94,6 +94,16 @@
             </widget>
            </item>
            <item>
+            <widget class="QCheckBox" name="oldSnapshotFilter">
+             <property name="text">
+              <string>Old Snapshots</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QCheckBox" name="betaFilter">
              <property name="text">
               <string>Betas</string>
@@ -276,6 +286,7 @@
   <tabstop>tabWidget</tabstop>
   <tabstop>releaseFilter</tabstop>
   <tabstop>snapshotFilter</tabstop>
+  <tabstop>oldSnapshotFilter</tabstop>
   <tabstop>betaFilter</tabstop>
   <tabstop>alphaFilter</tabstop>
   <tabstop>experimentsFilter</tabstop>
