@@ -48,8 +48,8 @@ jobs:
           mv ShatteredPrism-*.AppImage/ShatteredPrism-*.AppImage ShatteredPrism-Linux-x86_64.AppImage
           mv ShatteredPrism-*.AppImage.zsync/ShatteredPrism-*.AppImage.zsync ShatteredPrism-Linux-x86_64.AppImage.zsync
           mv ShatteredPrism*.flatpak/ShatteredPrism*.flatpak ShatteredPrism-Linux-${{ env.VERSION }}-x86_64.flatpak
-          mv ShatteredPrism-macOS-Legacy*/ShatteredPrism.tar.gz ShatteredPrism-macOS-Legacy-${{ env.VERSION }}.tar.gz
-          mv ShatteredPrism-macOS*/ShatteredPrism.tar.gz ShatteredPrism-macOS-${{ env.VERSION }}.tar.gz
+          mv ShatteredPrism-macOS-Legacy*/ShatteredPrism.zip ShatteredPrism-macOS-Legacy-${{ env.VERSION }}.zip
+          mv ShatteredPrism-macOS*/ShatteredPrism.zip ShatteredPrism-macOS-${{ env.VERSION }}.zip
 
           tar --exclude='.git' -czf ShatteredPrism-${{ env.VERSION }}.tar.gz ShatteredPrism-${{ env.VERSION }}
 
@@ -95,8 +95,8 @@ jobs:
             ShatteredPrism-Linux-x86_64.AppImage
             ShatteredPrism-Linux-x86_64.AppImage.zsync
             ShatteredPrism-Linux-${{ env.VERSION }}-x86_64.flatpak
-            ShatteredPrism-macOS-${{ env.VERSION }}.tar.gz
-            ShatteredPrism-macOS-Legacy-${{ env.VERSION }}.tar.gz
+            ShatteredPrism-macOS-${{ env.VERSION }}.zip
+            ShatteredPrism-macOS-Legacy-${{ env.VERSION }}.zip
             ShatteredPrism-Linux-Qt5-${{ env.VERSION }}.tar.gz
             ShatteredPrism-Linux-Qt5-Portable-${{ env.VERSION }}.tar.gz
             ShatteredPrism-Linux-Qt6-${{ env.VERSION }}.tar.gz
@@ -107,4 +107,4 @@ jobs:
             ShatteredPrism-Windows-MinGW-w64-Setup-${{ env.VERSION }}.exe
             ShatteredPrism-Windows-MinGW-w64-Portable-${{ env.VERSION }}.zip
             ShatteredPrism-Windows-MinGW-w64-${{ env.VERSION }}.zip
-            ShatteredPrism-${{ env.VERSION }}.tar.gz
+            ShatteredPrism-${{ env.VERSION }}.zip
